@@ -1,0 +1,12 @@
+import 'package:rickandmorty/models/character_response_model.dart';
+import 'package:rickandmorty/service/api_service.dart';
+
+class CharacterRepository {
+  final ApiService _apiService;
+  CharacterRepository(this._apiService);
+
+  Future<CharacterResponse> fetchCharacters({int page = 1}) async {
+    CharacterResponse characterResponse = await _apiService.fetchCharacters(page);
+    return characterResponse;
+  }
+}
