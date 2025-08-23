@@ -2,7 +2,7 @@
 
 This app is built on Flutter with MVVM Architecture and Riverpod for state management
 
-Rick and Morty API to fetch information about the movies
+Rick and Morty API to fetch information about the characters from the show
 
 GetIt for dependency Injection
 
