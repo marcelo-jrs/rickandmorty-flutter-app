@@ -8,5 +8,5 @@ GetIt for dependency Injection
 
 # Future Updates
 
-- Add character details screen
-- Add search and filter engine
+- Add character details screen - Implemented
+- Add search and filter engine - Implemented
