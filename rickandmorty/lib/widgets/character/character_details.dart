@@ -57,6 +57,7 @@ class CharacterDetailsWidget extends StatelessWidget {
           
           _buildSectionTitle('Additional Info'),
           _buildInfoRow('Created', _formatDate(character.created)),
+          SizedBox(height: 40),
         ],
       ),
       
