@@ -1,5 +1,5 @@
-// character_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rickandmorty/enums/filter_enums.dart';
 import 'package:rickandmorty/models/character_model.dart';
 import 'package:rickandmorty/view_model/character/character_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,13 +17,21 @@ class Characters extends _$Characters {
     return CharacterState();
   }
 
-  Future<void> getCharacters() async {
+  Future<void> getCharacters({bool reset = false}) async {
     if (state.isLoading) return;
+    final nextPage = reset ? 1 : state.currentPage;
     state = state.copyWith(isLoading: true);
     try {
-      final response = await _characterRepository.fetchCharacters(page: state.currentPage);
+      final response = await _characterRepository.fetchCharacters(
+        page: nextPage,
+        name: state.searchQuery,
+        status: state.statusFilter,
+        gender: state.genderFilter
+        );
       state = state.copyWith(
-        charactersList: [...state.charactersList, ...response.results],
+        charactersList: reset 
+            ? response.results 
+            : [...state.charactersList, ...response.results],
         currentPage: state.currentPage + 1,
         isLoading: false,
         fetchCharactersError: "",
@@ -35,6 +43,65 @@ class Characters extends _$Characters {
       rethrow;
     }
   }
+
+  void updateSearchQuery(String query) {
+    if (state.searchQuery == query) return;
+
+    state = state.copyWith(
+      searchQuery: query,
+      currentPage: 1,
+      charactersList: [],
+      hasMore: true,
+      isSearching: query.isNotEmpty,
+    );
+
+    getCharacters(reset: true);
+  }
+
+  void clearSearch() {
+    updateSearchQuery('');
+  }
+
+  void updateFilters({
+    StatusFilter? status,
+    GenderFilter? gender,
+  }) {
+    final newStatus = status ?? state.statusFilter;
+    final newGender = gender ?? state.genderFilter;
+
+    final hasActiveFilters = newStatus != StatusFilter.none || 
+                             newGender != GenderFilter.none;
+
+    state = state.copyWith(
+    statusFilter: newStatus,
+    genderFilter: newGender,
+    hasActiveFilters: hasActiveFilters,
+    currentPage: 1,
+    charactersList: [],
+    hasMore: true,
+    );
+
+    getCharacters(reset: true);
+  }
+
+  void clearFilters() {
+    state = state.copyWith(
+      statusFilter: StatusFilter.none,
+      genderFilter: GenderFilter.none,
+      hasActiveFilters: false,
+      currentPage: 1,
+      charactersList: [],
+      hasMore: true,
+    );
+    
+    getCharacters(reset: true);
+  }
+
+  void clearAll() {
+    clearSearch();
+    clearFilters();
+  }
+
 }
 
 @riverpod

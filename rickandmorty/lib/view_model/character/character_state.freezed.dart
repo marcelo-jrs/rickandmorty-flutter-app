@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CharacterState {
 
- int get currentPage; List<CharacterModel> get charactersList; bool get isLoading; String get fetchCharactersError; bool get hasMore; InfoModel? get info;
+ int get currentPage; List<CharacterModel> get charactersList; bool get isLoading; String get fetchCharactersError; bool get hasMore; InfoModel? get info; String get searchQuery; bool get isSearching; StatusFilter get statusFilter; GenderFilter get genderFilter; bool get hasActiveFilters;
 /// Create a copy of CharacterState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CharacterStateCopyWith<CharacterState> get copyWith => _$CharacterStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CharacterState&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other.charactersList, charactersList)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.fetchCharactersError, fetchCharactersError) || other.fetchCharactersError == fetchCharactersError)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.info, info) || other.info == info));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CharacterState&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other.charactersList, charactersList)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.fetchCharactersError, fetchCharactersError) || other.fetchCharactersError == fetchCharactersError)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.info, info) || other.info == info)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.statusFilter, statusFilter) || other.statusFilter == statusFilter)&&(identical(other.genderFilter, genderFilter) || other.genderFilter == genderFilter)&&(identical(other.hasActiveFilters, hasActiveFilters) || other.hasActiveFilters == hasActiveFilters));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentPage,const DeepCollectionEquality().hash(charactersList),isLoading,fetchCharactersError,hasMore,info);
+int get hashCode => Object.hash(runtimeType,currentPage,const DeepCollectionEquality().hash(charactersList),isLoading,fetchCharactersError,hasMore,info,searchQuery,isSearching,statusFilter,genderFilter,hasActiveFilters);
 
 @override
 String toString() {
-  return 'CharacterState(currentPage: $currentPage, charactersList: $charactersList, isLoading: $isLoading, fetchCharactersError: $fetchCharactersError, hasMore: $hasMore, info: $info)';
+  return 'CharacterState(currentPage: $currentPage, charactersList: $charactersList, isLoading: $isLoading, fetchCharactersError: $fetchCharactersError, hasMore: $hasMore, info: $info, searchQuery: $searchQuery, isSearching: $isSearching, statusFilter: $statusFilter, genderFilter: $genderFilter, hasActiveFilters: $hasActiveFilters)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CharacterStateCopyWith<$Res>  {
   factory $CharacterStateCopyWith(CharacterState value, $Res Function(CharacterState) _then) = _$CharacterStateCopyWithImpl;
 @useResult
 $Res call({
- int currentPage, List<CharacterModel> charactersList, bool isLoading, String fetchCharactersError, bool hasMore, InfoModel? info
+ int currentPage, List<CharacterModel> charactersList, bool isLoading, String fetchCharactersError, bool hasMore, InfoModel? info, String searchQuery, bool isSearching, StatusFilter statusFilter, GenderFilter genderFilter, bool hasActiveFilters
 });
 
 
@@ -62,7 +62,7 @@ class _$CharacterStateCopyWithImpl<$Res>
 
 /// Create a copy of CharacterState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentPage = null,Object? charactersList = null,Object? isLoading = null,Object? fetchCharactersError = null,Object? hasMore = null,Object? info = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentPage = null,Object? charactersList = null,Object? isLoading = null,Object? fetchCharactersError = null,Object? hasMore = null,Object? info = freezed,Object? searchQuery = null,Object? isSearching = null,Object? statusFilter = null,Object? genderFilter = null,Object? hasActiveFilters = null,}) {
   return _then(_self.copyWith(
 currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,charactersList: null == charactersList ? _self.charactersList : charactersList // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,12 @@ as List<CharacterModel>,isLoading: null == isLoading ? _self.isLoading : isLoadi
 as bool,fetchCharactersError: null == fetchCharactersError ? _self.fetchCharactersError : fetchCharactersError // ignore: cast_nullable_to_non_nullable
 as String,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
-as InfoModel?,
+as InfoModel?,searchQuery: null == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
+as String,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,statusFilter: null == statusFilter ? _self.statusFilter : statusFilter // ignore: cast_nullable_to_non_nullable
+as StatusFilter,genderFilter: null == genderFilter ? _self.genderFilter : genderFilter // ignore: cast_nullable_to_non_nullable
+as GenderFilter,hasActiveFilters: null == hasActiveFilters ? _self.hasActiveFilters : hasActiveFilters // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 /// Create a copy of CharacterState
@@ -167,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info,  String searchQuery,  bool isSearching,  StatusFilter statusFilter,  GenderFilter genderFilter,  bool hasActiveFilters)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CharacterState() when $default != null:
-return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info);case _:
+return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info,_that.searchQuery,_that.isSearching,_that.statusFilter,_that.genderFilter,_that.hasActiveFilters);case _:
   return orElse();
 
 }
@@ -188,10 +193,10 @@ return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fet
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info,  String searchQuery,  bool isSearching,  StatusFilter statusFilter,  GenderFilter genderFilter,  bool hasActiveFilters)  $default,) {final _that = this;
 switch (_that) {
 case _CharacterState():
-return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info);case _:
+return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info,_that.searchQuery,_that.isSearching,_that.statusFilter,_that.genderFilter,_that.hasActiveFilters);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +213,10 @@ return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fet
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int currentPage,  List<CharacterModel> charactersList,  bool isLoading,  String fetchCharactersError,  bool hasMore,  InfoModel? info,  String searchQuery,  bool isSearching,  StatusFilter statusFilter,  GenderFilter genderFilter,  bool hasActiveFilters)?  $default,) {final _that = this;
 switch (_that) {
 case _CharacterState() when $default != null:
-return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info);case _:
+return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fetchCharactersError,_that.hasMore,_that.info,_that.searchQuery,_that.isSearching,_that.statusFilter,_that.genderFilter,_that.hasActiveFilters);case _:
   return null;
 
 }
@@ -223,7 +228,7 @@ return $default(_that.currentPage,_that.charactersList,_that.isLoading,_that.fet
 
 
 class _CharacterState implements CharacterState {
-   _CharacterState({this.currentPage = 1, final  List<CharacterModel> charactersList = const [], this.isLoading = false, this.fetchCharactersError = "", this.hasMore = false, this.info = null}): _charactersList = charactersList;
+   _CharacterState({this.currentPage = 1, final  List<CharacterModel> charactersList = const [], this.isLoading = false, this.fetchCharactersError = "", this.hasMore = false, this.info = null, this.searchQuery = "", this.isSearching = false, this.statusFilter = StatusFilter.none, this.genderFilter = GenderFilter.none, this.hasActiveFilters = false}): _charactersList = charactersList;
   
 
 @override@JsonKey() final  int currentPage;
@@ -238,6 +243,11 @@ class _CharacterState implements CharacterState {
 @override@JsonKey() final  String fetchCharactersError;
 @override@JsonKey() final  bool hasMore;
 @override@JsonKey() final  InfoModel? info;
+@override@JsonKey() final  String searchQuery;
+@override@JsonKey() final  bool isSearching;
+@override@JsonKey() final  StatusFilter statusFilter;
+@override@JsonKey() final  GenderFilter genderFilter;
+@override@JsonKey() final  bool hasActiveFilters;
 
 /// Create a copy of CharacterState
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +259,16 @@ _$CharacterStateCopyWith<_CharacterState> get copyWith => __$CharacterStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CharacterState&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other._charactersList, _charactersList)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.fetchCharactersError, fetchCharactersError) || other.fetchCharactersError == fetchCharactersError)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.info, info) || other.info == info));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CharacterState&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other._charactersList, _charactersList)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.fetchCharactersError, fetchCharactersError) || other.fetchCharactersError == fetchCharactersError)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.info, info) || other.info == info)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.statusFilter, statusFilter) || other.statusFilter == statusFilter)&&(identical(other.genderFilter, genderFilter) || other.genderFilter == genderFilter)&&(identical(other.hasActiveFilters, hasActiveFilters) || other.hasActiveFilters == hasActiveFilters));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentPage,const DeepCollectionEquality().hash(_charactersList),isLoading,fetchCharactersError,hasMore,info);
+int get hashCode => Object.hash(runtimeType,currentPage,const DeepCollectionEquality().hash(_charactersList),isLoading,fetchCharactersError,hasMore,info,searchQuery,isSearching,statusFilter,genderFilter,hasActiveFilters);
 
 @override
 String toString() {
-  return 'CharacterState(currentPage: $currentPage, charactersList: $charactersList, isLoading: $isLoading, fetchCharactersError: $fetchCharactersError, hasMore: $hasMore, info: $info)';
+  return 'CharacterState(currentPage: $currentPage, charactersList: $charactersList, isLoading: $isLoading, fetchCharactersError: $fetchCharactersError, hasMore: $hasMore, info: $info, searchQuery: $searchQuery, isSearching: $isSearching, statusFilter: $statusFilter, genderFilter: $genderFilter, hasActiveFilters: $hasActiveFilters)';
 }
 
 
@@ -269,7 +279,7 @@ abstract mixin class _$CharacterStateCopyWith<$Res> implements $CharacterStateCo
   factory _$CharacterStateCopyWith(_CharacterState value, $Res Function(_CharacterState) _then) = __$CharacterStateCopyWithImpl;
 @override @useResult
 $Res call({
- int currentPage, List<CharacterModel> charactersList, bool isLoading, String fetchCharactersError, bool hasMore, InfoModel? info
+ int currentPage, List<CharacterModel> charactersList, bool isLoading, String fetchCharactersError, bool hasMore, InfoModel? info, String searchQuery, bool isSearching, StatusFilter statusFilter, GenderFilter genderFilter, bool hasActiveFilters
 });
 
 
@@ -286,7 +296,7 @@ class __$CharacterStateCopyWithImpl<$Res>
 
 /// Create a copy of CharacterState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentPage = null,Object? charactersList = null,Object? isLoading = null,Object? fetchCharactersError = null,Object? hasMore = null,Object? info = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentPage = null,Object? charactersList = null,Object? isLoading = null,Object? fetchCharactersError = null,Object? hasMore = null,Object? info = freezed,Object? searchQuery = null,Object? isSearching = null,Object? statusFilter = null,Object? genderFilter = null,Object? hasActiveFilters = null,}) {
   return _then(_CharacterState(
 currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,charactersList: null == charactersList ? _self._charactersList : charactersList // ignore: cast_nullable_to_non_nullable
@@ -294,7 +304,12 @@ as List<CharacterModel>,isLoading: null == isLoading ? _self.isLoading : isLoadi
 as bool,fetchCharactersError: null == fetchCharactersError ? _self.fetchCharactersError : fetchCharactersError // ignore: cast_nullable_to_non_nullable
 as String,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
-as InfoModel?,
+as InfoModel?,searchQuery: null == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
+as String,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,statusFilter: null == statusFilter ? _self.statusFilter : statusFilter // ignore: cast_nullable_to_non_nullable
+as StatusFilter,genderFilter: null == genderFilter ? _self.genderFilter : genderFilter // ignore: cast_nullable_to_non_nullable
+as GenderFilter,hasActiveFilters: null == hasActiveFilters ? _self.hasActiveFilters : hasActiveFilters // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

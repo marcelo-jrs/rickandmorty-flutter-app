@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rickandmorty/models/character_model.dart';
+import 'package:rickandmorty/screens/character_details_screen.dart';
+import 'package:rickandmorty/service/init_getit.dart';
+import 'package:rickandmorty/service/navigation_service.dart';
 import 'package:rickandmorty/widgets/cached_network_image.dart';
 
 class CharacterCard extends StatelessWidget {
@@ -14,20 +17,25 @@ class CharacterCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          getIt<NavigationService>().navigate(CharacterDetailsScreen(character: character));
+        },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedImageWidget(
-                  imgUrl: character.image,
-                  imgHeight: 80,
-                  imgWidth: 80,
-                  boxFit: BoxFit.cover,
+              Hero(
+                tag: 'character-${character.id}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedImageWidget(
+                    imgUrl: character.image,
+                    imgHeight: 80,
+                    imgWidth: 80,
+                    boxFit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

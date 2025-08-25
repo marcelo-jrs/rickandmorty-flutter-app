@@ -147,7 +147,7 @@ class _CurrentCharacterProviderElement
   int get index => (origin as CurrentCharacterProvider).index;
 }
 
-String _$charactersHash() => r'e200423f77df737a5ee6e037000a1cfd0b871b5c';
+String _$charactersHash() => r'58aebfc310daffec407a32c89030895c0a4d3a4c';
 
 /// See also [Characters].
 @ProviderFor(Characters)

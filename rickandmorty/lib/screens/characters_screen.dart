@@ -1,10 +1,10 @@
-// characters_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rickandmorty/view_model/character/character_provider.dart';
 import 'package:rickandmorty/view_model/theme_provider.dart';
 import 'package:rickandmorty/enums/theme_enums.dart';
 import 'package:rickandmorty/widgets/character/character_card.dart';
+import 'package:rickandmorty/widgets/search_bar.dart';
 
 class CharactersScreen extends ConsumerWidget {
   const CharactersScreen({super.key});
@@ -30,56 +30,87 @@ class CharactersScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Consumer(
-        builder: (context, WidgetRef ref, child) {
-          if (characterState.isLoading && characterState.charactersList.isEmpty) {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          } else if (characterState.fetchCharactersError.isNotEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    characterState.fetchCharactersError,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => ref.read(charactersProvider.notifier).getCharacters(),
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollInfo) {
-              if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-                  !characterState.isLoading &&
-                  characterState.hasMore) {
-                ref.read(charactersProvider.notifier).getCharacters();
-                return true;
-              }
-              return false;
-            },
-            child: ListView.builder(
-              itemCount: characterState.charactersList.length + (characterState.hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                // Load more indicator at the end
-                if (index == characterState.charactersList.length) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
+      body: Column(
+        children: [
+          const SearchBarWidget(),
+          Expanded(
+            child: Consumer(
+              builder: (context, WidgetRef ref, child) {
+                if (characterState.isLoading && characterState.charactersList.isEmpty) {
+                  return const Center(child: CircularProgressIndicator.adaptive());
+                } else if (characterState.fetchCharactersError.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          characterState.fetchCharactersError,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => ref.read(charactersProvider.notifier).getCharacters(reset: true),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (characterState.searchQuery.isNotEmpty && characterState.charactersList.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'No characters found',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Try a different search term',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => ref.read(charactersProvider.notifier).clearSearch(),
+                          child: const Text('Clear Search'),
+                        ),
+                      ],
+                    ),
                   );
                 }
 
-                final character = characterState.charactersList[index];
-                return CharacterCard(character: character);
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+                        !characterState.isLoading &&
+                        characterState.hasMore) {
+                      ref.read(charactersProvider.notifier).getCharacters();
+                      return true;
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    itemCount: characterState.charactersList.length + (characterState.hasMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == characterState.charactersList.length) {
+                        return const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
+                      final character = characterState.charactersList[index];
+                      return CharacterCard(character: character);
+                    },
+                  ),
+                );
               },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
